@@ -1,11 +1,15 @@
+import { logVisit } from './firebase-logger.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+    logVisit();
     const doiInput = document.getElementById('doi-input');
     const convertBtn = document.getElementById('convert-btn');
     const errorMsg = document.getElementById('error-msg');
-    const outputGroup = document.getElementById('output-group');
+    // const outputGroup = document.getElementById('output-group'); // Always visible now
     const bibtexOutput = document.getElementById('bibtex-output');
     const copyBtn = document.getElementById('copy-btn');
     const copyText = document.getElementById('copy-text');
+    const themeToggle = document.getElementById('theme-toggle');
 
     // Options
     const removeAbstractCheckbox = document.getElementById('remove-abstract');
@@ -13,6 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const beautifyCheckbox = document.getElementById('beautify-bibtex');
 
     let currentRawBibtex = null;
+
+    // Theme Logic
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
 
     convertBtn.addEventListener('click', handleConversion);
     doiInput.addEventListener('keypress', (e) => {
@@ -30,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     copyBtn.addEventListener('click', async () => {
         const text = bibtexOutput.textContent;
+        if (!text || bibtexOutput.classList.contains('placeholder')) return;
+
         try {
             await navigator.clipboard.writeText(text);
             const originalText = copyText.textContent;
@@ -51,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         clearError();
         setLoading(true);
-        outputGroup.classList.remove('visible');
 
         try {
             const doi = extractDOI(input);
@@ -62,17 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentRawBibtex = await fetchBibTeX(doi);
             renderOutput();
 
-            outputGroup.classList.remove('hidden');
-            // Small delay to allow display:block to apply before adding opacity class
-            setTimeout(() => {
-                outputGroup.classList.add('visible');
-            }, 10);
+            // Enable copy button
+            copyBtn.disabled = false;
         } catch (err) {
             showError(err.message);
-            outputGroup.classList.remove('visible');
-            setTimeout(() => {
-                outputGroup.classList.add('hidden');
-            }, 300);
         } finally {
             setLoading(false);
         }
@@ -82,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentRawBibtex) return;
         const processedBibtex = processBibTeX(currentRawBibtex);
         bibtexOutput.textContent = processedBibtex;
+        bibtexOutput.classList.remove('placeholder');
     }
 
     function extractDOI(input) {

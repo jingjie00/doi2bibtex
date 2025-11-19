@@ -1,15 +1,29 @@
 :root {
-    --bg-color: #0f1115;
+    /* Dark Theme (Default) */
+    --bg-color: #0d1117;
     --card-bg: #161b22;
-    --text-primary: #f0f6fc;
+    --text-primary: #c9d1d9;
     --text-secondary: #8b949e;
     --accent-color: #58a6ff;
-    --accent-hover: #79c0ff;
+    --accent-hover: #1f6feb;
     --border-color: #30363d;
     --error-color: #f85149;
-    --success-color: #3fb950;
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, "Liberation Mono", Menlo, monospace;
+    --code-bg: #0d1117;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+[data-theme="light"] {
+    --bg-color: #f6f8fa;
+    --card-bg: #ffffff;
+    --text-primary: #24292f;
+    --text-secondary: #57606a;
+    --accent-color: #0969da;
+    --accent-hover: #0550ae;
+    --border-color: #d0d7de;
+    --error-color: #cf222e;
+    --code-bg: #f6f8fa;
 }
 
 * {
@@ -22,43 +36,77 @@ body {
     font-family: var(--font-sans);
     background-color: var(--bg-color);
     color: var(--text-primary);
-    line-height: 1.6;
-    height: 100vh;
-    /* Full viewport height */
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
     overflow: hidden;
-    /* Prevent body scroll, handle inside containers */
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem;
-    height: 100%;
+    max-width: 1200px;
+    padding: 2rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    height: 100%;
+    gap: 1rem;
 }
 
 header {
-    flex-shrink: 0;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 header h1 {
-    font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #58a6ff 0%, #a371f7 100%);
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 0.25rem;
 }
 
 header p {
     color: var(--text-secondary);
     font-size: 1rem;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background-color: rgba(110, 118, 129, 0.1);
+    color: var(--text-primary);
+}
+
+.sun-icon {
+    display: none;
+}
+
+.moon-icon {
+    display: block;
+}
+
+[data-theme="light"] .sun-icon {
+    display: block;
+}
+
+[data-theme="light"] .moon-icon {
+    display: none;
 }
 
 main {
@@ -69,7 +117,6 @@ main {
     gap: 2rem;
     min-height: 0;
     /* Important for nested scrolling */
-    /* align-items: start; Removed to allow stretch */
 }
 
 .input-group {
@@ -102,7 +149,7 @@ input[type="text"] {
     color: var(--text-primary);
     font-family: var(--font-mono);
     font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s;
 }
 
 input[type="text"]:focus {
@@ -152,7 +199,13 @@ button {
 .secondary-btn:hover {
     color: var(--text-primary);
     border-color: var(--text-secondary);
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(110, 118, 129, 0.1);
+}
+
+.secondary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .options-group {
@@ -230,19 +283,12 @@ button {
     height: 100%;
     /* Fill height */
     max-height: 100%;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-    pointer-events: none;
+    transition: background-color 0.3s, border-color 0.3s;
     overflow: hidden;
     /* Ensure no scroll on container */
 }
 
-.output-group.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
+
 
 .output-header {
     display: flex;
@@ -250,12 +296,15 @@ button {
     align-items: center;
     margin-bottom: 12px;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .output-actions {
     display: flex;
     align-items: center;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .checkbox-wrapper.small {
@@ -272,7 +321,7 @@ button {
 }
 
 .code-wrapper {
-    background-color: #0d1117;
+    background-color: var(--code-bg);
     border-radius: 8px;
     padding: 16px;
     border: 1px solid var(--border-color);
@@ -282,6 +331,7 @@ button {
     position: relative;
     min-height: 0;
     /* Crucial for flex child scrolling */
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 code {
@@ -291,6 +341,12 @@ code {
     /* Wrap long lines */
     word-break: break-all;
     color: var(--text-primary);
+}
+
+code.placeholder {
+    color: var(--text-secondary);
+    font-style: italic;
+    opacity: 0.7;
 }
 
 .hidden {
@@ -307,13 +363,45 @@ footer {
     color: var(--text-secondary);
     font-size: 0.85rem;
     flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 0;
 }
 
-footer code {
-    background-color: rgba(110, 118, 129, 0.2);
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-size: 0.8em;
+footer p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+footer a {
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+footer a:hover {
+    border-bottom-color: var(--text-primary);
+}
+
+.github-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+    margin-left: 8px;
+    border-bottom: none !important;
+}
+
+.github-link:hover {
+    color: var(--accent-color);
 }
 
 /* Loading state */
@@ -378,5 +466,10 @@ footer code {
     .primary-btn {
         width: 100%;
         padding: 12px;
+    }
+
+    .output-actions {
+        gap: 10px;
+        justify-content: flex-end;
     }
 }
