@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOI to BibTeX Converter</title>
+    <meta name="description" content="Convert DOI to BibTeX with AuthorYear key format.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DOI to BibTeX</h1>
+            <p>Convert DOIs to clean BibTeX citations instantly.</p>
+        </header>
+
+        <main>
+            <div class="input-group">
+                <label for="doi-input">Enter DOI or URL</label>
+                <div class="input-wrapper">
+                    <input type="text" id="doi-input" placeholder="e.g., 10.1038/s41586-020-2649-2" autocomplete="off">
+                    <button id="convert-btn" class="primary-btn">
+                        <span>Convert</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="options-group">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="remove-abstract" checked>
+                        <span class="checkbox-label">Remove Abstract</span>
+                    </label>
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="remove-keywords" checked>
+                        <span class="checkbox-label">Remove Keywords</span>
+                    </label>
+                </div>
+                <p class="error-message" id="error-msg"></p>
+            </div>
+
+            <div class="output-group hidden" id="output-group">
+                <div class="output-header">
+                    <label>BibTeX Result</label>
+                    <div class="output-actions">
+                        <label class="checkbox-wrapper small">
+                            <input type="checkbox" id="beautify-bibtex" checked>
+                            <span class="checkbox-label">Beautify</span>
+                        </label>
+                        <button id="copy-btn" class="secondary-btn">
+                            <span id="copy-text">Copy</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 4V16C8 17.1046 8.89543 18 10 18H18C19.1046 18 20 17.1046 20 16V7.24264C20 6.71221 19.7893 6.20357 19.4142 5.82843L16.1716 2.58579C15.7964 2.21071 15.2878 2 14.7574 2H10C8.89543 2 8 2.89543 8 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 18V20C16 21.1046 15.1046 22 14 22H6C4.89543 22 4 21.1046 4 20V8C4 6.89543 4.89543 6 6 6H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="code-wrapper">
+                    <pre><code id="bibtex-output"></code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Generates <code>AuthorYear</code> keys. Removes abstract & keywords.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
