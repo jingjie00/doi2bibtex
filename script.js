@@ -145,8 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!fontSizeValue) return;
         
         const sizeRem = `${size}rem`;
-        fontSizeValue.textConte
-        nt = size;
+        fontSizeValue.textContent = size;
         
         // Apply to all code elements
         const codeElements = document.querySelectorAll('.code-wrapper code');
@@ -358,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Apply font size to first code element
         if (fontSizeSlider) {
-            bibtexOutput.style.fontSize = `${fontSizeSlider.value}rem`;
+            bibtexOutput.style.fontSize = `${fontSizeSlider.value}`;
         }
         
         // Add copy button to first code wrapper if not exists
@@ -421,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Apply font size to second code element
         if (fontSizeSlider) {
-            secondBibtexOutput.style.fontSize = `${fontSizeSlider.value}rem`;
+            secondBibtexOutput.style.fontSize = `${fontSizeSlider.value}`;
         }
         
         secondCodeWrapper.style.display = 'block';
