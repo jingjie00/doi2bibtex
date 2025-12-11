@@ -334,11 +334,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 separator.style.display = 'none';
             }
             
-            // Remove copy button from first code wrapper if it exists
+            // Add copy button to first code wrapper if not exists
             const firstCodeWrapper = document.querySelector('#output-group .code-wrapper');
-            const firstCopyBtn = firstCodeWrapper?.querySelector('.code-copy-btn');
-            if (firstCopyBtn) {
-                firstCopyBtn.remove();
+            let firstCopyBtn = firstCodeWrapper?.querySelector('.code-copy-btn');
+            if (!firstCopyBtn && firstCodeWrapper) {
+                firstCopyBtn = createCodeCopyButton('bibtex-output', 'copy-text-1');
+                firstCodeWrapper.style.position = 'relative';
+                firstCodeWrapper.appendChild(firstCopyBtn);
             }
         }
     }
