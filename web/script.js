@@ -553,13 +553,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function extractRelatedDOI(arxivDOI) {
-        // Use CORS proxy to fetch HTML from doi.org
+        // Use Electron API if available
+        if (window.electronAPI) {
+            try {
+                console.log('📡 Using Electron to fetch HTML (bypassing CORS)...');
+                const html = await window.electronAPI.fetchHTML(`https://doi.org/${arxivDOI}`);
+                console.log(`✅ Fetched HTML via Electron (${html.length} chars)`);
+                return await processHTMLForRelatedDOI(html, arxivDOI);
+            } catch (err) {
+                console.error('Error extracting Related DOI:', err);
+                throw err;
+            }
+        }
+        
+        // Fallback to CORS proxy (for web version)
         try {
             console.log('📡 Using CORS proxy to fetch HTML...');
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 20000);
             
-            // Try CORS proxy services
             const corsProxies = [
                 `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://doi.org/${arxivDOI}`)}`,
                 `https://corsproxy.io/?${encodeURIComponent(`https://doi.org/${arxivDOI}`)}`
@@ -771,8 +783,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchBibTeX(doi) {
+        // Use Electron API if available, otherwise fall back to fetch
+        if (window.electronAPI) {
+            try {
+                return await window.electronAPI.fetchBibTeX(doi);
+            } catch (err) {
+                throw err;
+            }
+        }
+        
+        // Fallback to original fetch (for web version)
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         try {
             const response = await fetch(`https://doi.org/${doi}`, {

@@ -301,6 +301,21 @@ button {
     color: var(--accent-color);
 }
 
+.feature-info a {
+    color: var(--accent-color);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.feature-info a:visited {
+    color: var(--accent-color);
+}
+
+.feature-info a:hover {
+    border-bottom-color: var(--accent-color);
+}
+
 .output-group {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -518,6 +533,10 @@ footer a {
     transition: border-color 0.2s;
 }
 
+footer a:visited {
+    color: var(--text-primary);
+}
+
 footer a:hover {
     border-bottom-color: var(--text-primary);
 }
@@ -531,6 +550,10 @@ footer a:hover {
     transition: color 0.2s;
     margin-left: 8px;
     border-bottom: none !important;
+}
+
+.github-link:visited {
+    color: var(--text-secondary);
 }
 
 .github-link:hover {

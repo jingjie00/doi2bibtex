@@ -1,0 +1,13 @@
+{
+  "name": "doi2bib",
+  "version": "1.0.0",
+  "description": "DOI to BibTeX Converter",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "serve": "npx http-server . -p 8080"
+  },
+  "keywords": ["doi", "bibtex", "converter"],
+  "author": "",
+  "license": "MIT"
+}
+
